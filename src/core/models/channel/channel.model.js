@@ -40,11 +40,15 @@ inviteUser(email, currentUser, channelId){
         const admin = new User();
         const channel = new Channel();
         user.findOne(email).then((results) => {
+        let userAdded = results._id.toString();
         channel.findOne(channelId).then((results) => {
-            resolve(results);
+            if(currentUser == results.user){
+                this.collection.updateOne({"_id": ObjectId(channelId.toString())}, {$push:{"invited":userAdded}})
+            }
         })
-        })}
-    )}
+    })
+    resolve("Added")
+})}
 
 findOne(id){
     return new Promise((accept, reject)=>{
