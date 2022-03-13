@@ -61,6 +61,25 @@ findOne(id){
         })
     });
 }
-}
+
+join(id, currentUser){
+    return new Promise((accept, reject) => {
+        const channel = new Channel();
+        console.log(currentUser);
+        channel.findOne(id).then((results) => {
+            this.collection.update({},
+                {$pull: {invited: currentUser}}).then(() => {
+                this.collection.update({"_id": ObjectId(id.toString())}, {$push:{"users":currentUser}})   
+            })
+            accept(results);
+            }
+    )
+})
+}}
 
 module.exports = Channel;
+
+/*
+.then((results) => {
+                    this.collection.updateOne({"_id": ObjectId(channelId.toString())}, {$push:{"users":currentUser}})
+                })*/

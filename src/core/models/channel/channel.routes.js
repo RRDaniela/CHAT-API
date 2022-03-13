@@ -14,4 +14,6 @@ router.post('/channel', verify, (req, res) => {
 
 router.post('/channel/invite/:id', verify, channelController.invite);
 
+router.get('/channel/:id', verify, channelController.join);
+
 module.exports = router;
