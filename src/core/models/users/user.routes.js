@@ -7,7 +7,7 @@ const { redirect } = require('express/lib/response');
 
 /**
  * @swagger
- *  /api/users:
+ * /api/users:
  *      get:
  *          tags:
  *          - Users
@@ -17,7 +17,69 @@ const { redirect } = require('express/lib/response');
  *                  description: Array with a list of users
  *              400:
  *                  description: Couldn't get users.
- *                          
+ * /api/users/register:
+ *  post:
+ *          consumes:
+ *          - application/json
+ *          parameters:
+ *           - in: body
+ *             name: name
+ *             type: string
+ *             description: a person's name
+ *           - in: body 
+ *             email: email
+ *             type: string
+ *             description: a person's email
+ *           - in: body 
+ *             password: password 
+ *             type: string
+ *             description: a person's password
+ *           - in: body 
+ *             role: role
+ *             type: string
+ *             description: a person's role
+ *           - in: body 
+ *             group: group
+ *             type: string
+ *             description: a person's groups
+ *          tags:
+ *          - Users
+ *          description: Register a new User
+ *          responses:
+ *              200:
+ *                  description: User created.
+ *              400:
+ *                  description: Couldn't create user;
+ *              404:
+ *                  description: Email already registered.
+ * /api/users/login:
+ *  post:
+ *      content:
+ *          - application/json
+ *      parameters:
+ *         - in: body
+ *           name: user
+ *           schema: 
+ *              $ref: '#/definitions/User'
+ *      tags:
+ *      - Users
+ *      description: Login
+ *      responses:
+ *          200:
+ *              description: OK
+ *          400:
+ *              description: Wrong credentials
+ * definitions:
+ *  User:
+ *      type: object
+ *      required:
+ *      - email:
+ *          type: string
+ *      - password:
+ *          type: string
+ *      example:
+ *          email: julia@email.com
+ *          password: 123456
  */
 
 router.get('/users', usersController.getAll);

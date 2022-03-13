@@ -51,7 +51,7 @@ const swaggerConfig ={
             servers: ['http://localhost:'+port]
         }
     },
-    apis: ['./src/core/models/users/user.routes.js','./src/core/models/usergroup/usergroup.routes.js']
+    apis: ['./src/core/models/users/user.routes.js','./src/core/models/usergroup/usergroup.routes.js', './src/core/models/channel/channel.routes.js', './src/core/models/message/message.routes.js']
 }
 
 const swaggersDocs = swaggersJsDoc(swaggerConfig);
