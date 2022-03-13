@@ -8,6 +8,12 @@ const messagesController = {
             res.send(results);
         });
     },
+    create: (req, res) => {
+        const message = new Message();
+        message.newMessage(req.user._id, req.body.message, req.params.id).then((results) => {
+            res.send(results);
+        })
+    }
 };
 
 console.log(Message);

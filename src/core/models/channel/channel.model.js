@@ -79,7 +79,19 @@ join(id, currentUser){
         accept(results);
         }
     )
-})}}
+})}
+
+channelMessage(user, date, message, id){
+    return new Promise((accept, reject) => {
+        const channel = new Channel();
+        channel.findOne(id).then((results) => {
+
+            this.collection.update({"_id": ObjectId(id.toString())}, {$push: {"messages" :[{"message":message, "date":date, "user":user}]}});
+            accept(results);
+        })
+    }
+    )}
+}
 
 module.exports = Channel;
 
