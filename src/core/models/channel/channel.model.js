@@ -67,15 +67,19 @@ join(id, currentUser){
         const channel = new Channel();
         console.log(currentUser);
         channel.findOne(id).then((results) => {
-            this.collection.update({},
-                {$pull: {invited: currentUser}}).then(() => {
-                this.collection.update({"_id": ObjectId(id.toString())}, {$push:{"users":currentUser}})   
-            })
-            accept(results);
-            }
+            this.collection.findOne({"invited" : currentUser}).then((results)=>{
+                if(results!=null){
+                this.collection.update({},
+                    {$pull: {invited: currentUser}}).then(() => {
+                    this.collection.update({"_id": ObjectId(id.toString())}, {$push:{"users":currentUser}})   
+                })
+                accept(results);
+            }}
+            )
+        accept(results);
+        }
     )
-})
-}}
+})}}
 
 module.exports = Channel;
 
