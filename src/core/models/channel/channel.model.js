@@ -40,15 +40,11 @@ inviteUser(email, currentUser, channelId){
         const admin = new User();
         const channel = new Channel();
         user.findOne(email).then((results) => {
-        let userAdded = results._id.toString();
         channel.findOne(channelId).then((results) => {
-            if(currentUser == results.user){
-                this.collection.updateOne({"_id": ObjectId(channelId.toString())}, {$push:{"invited":userAdded}})
-            }
+            resolve(results);
         })
-    })
-    resolve("Added")
-})}
+        })}
+    )}
 
 findOne(id){
     return new Promise((accept, reject)=>{
@@ -61,41 +57,6 @@ findOne(id){
         })
     });
 }
-
-join(id, currentUser){
-    return new Promise((accept, reject) => {
-        const channel = new Channel();
-        console.log(currentUser);
-        channel.findOne(id).then((results) => {
-            this.collection.findOne({"invited" : currentUser}).then((results)=>{
-                if(results!=null){
-                this.collection.update({},
-                    {$pull: {invited: currentUser}}).then(() => {
-                    this.collection.update({"_id": ObjectId(id.toString())}, {$push:{"users":currentUser}})   
-                })
-                accept(results);
-            }}
-            )
-        accept(results);
-        }
-    )
-})}
-
-channelMessage(user, date, message, id){
-    return new Promise((accept, reject) => {
-        const channel = new Channel();
-        channel.findOne(id).then((results) => {
-
-            this.collection.update({"_id": ObjectId(id.toString())}, {$push: {"messages" :[{"message":message, "date":date, "user":user}]}});
-            accept(results);
-        })
-    }
-    )}
 }
 
 module.exports = Channel;
-
-/*
-.then((results) => {
-                    this.collection.updateOne({"_id": ObjectId(channelId.toString())}, {$push:{"users":currentUser}})
-                })*/

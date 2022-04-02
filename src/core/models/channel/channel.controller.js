@@ -26,17 +26,7 @@ const channelController = {
             }else{
                 res.send(results)
             }
-    })},
-    join: (req, res) => {
-        const channel = new Channel();
-        channel.join(req.params.id, req.user._id,).then((results) => {
-            if(results==null){
-                res.send("Can't join");
-            }else{
-                res.send("Joined")
-            }
-        })
-    }
+    })}
 };
 
 module.exports = channelController;

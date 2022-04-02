@@ -8,10 +8,13 @@ const roleRouter = require('./src/core/models/role/role.routes');
 const roomRouter = require('./src/core/models/room/room.routes');
 const sessionRouter = require('./src/core/models/session/session.routes');
 const usergroupRouter = require('./src/core/models/usergroup/usergroup.routes');
+const socketIo = require('socket.io');
+const cors = require('cors');   
+let server;
+
 
 const swaggersJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
 
 
 const Database = require('./src/core/db');
@@ -21,7 +24,7 @@ const { Db } = require('mongodb');
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 //Set endpoints
 const port = process.env.PORT || 3000;
 
@@ -51,16 +54,25 @@ const swaggerConfig ={
             servers: ['http://localhost:'+port]
         }
     },
-    apis: ['./src/core/models/users/user.routes.js','./src/core/models/usergroup/usergroup.routes.js', './src/core/models/channel/channel.routes.js', './src/core/models/message/message.routes.js']
+    apis: ['./src/core/models/users/user.routes.js','./src/core/models/usergroup/usergroup.routes.js']
 }
 
 const swaggersDocs = swaggersJsDoc(swaggerConfig);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggersDocs)); 
 
-
 //Listen to port
 Database.connect(() => {
-app.listen(port, () => {
+server = app.listen(port, () => {
     console.log('App is listening on port ' + port);
     });
+    const io= socketIo(server, {
+        cors:{
+            origin:'http://localhost:4200',
+            methods:['GET', 'POST', 'PUT', 'DELETE']
+        }
+    });
+    
+    io.on('connection', socket => {
+        console.log('Alguien se conectó!')
+    })
 });
